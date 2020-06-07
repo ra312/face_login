@@ -18,9 +18,12 @@ from django.http import StreamingHttpResponse
 from django.urls import path
 
 from camera import VideoCamera, gen
-
+import camera_detect
+from camera_detect import gen as gen_det
 urlpatterns = [
+	path('face_detect/', lambda r : StreamingHttpResponse(gen_det(camera_detect.VideoCamera()), 
+													content_type = 'multipart/x-mixed-replace; boundary=frame')),
     path('monitor/', lambda r: StreamingHttpResponse(gen(VideoCamera()),
-                                                     content_type='multipart/x-mixed-replace; boundary=frame')),
+                                                    content_type='multipart/x-mixed-replace; boundary=frame')),
     path('admin/', admin.site.urls),
 ]
